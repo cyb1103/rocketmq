@@ -28,13 +28,14 @@ set CLASSPATH=.;%BASE_DIR%conf;%BASE_DIR%lib\*;"%CLASSPATH%"
 rem ===========================================================================================
 rem  JVM Configuration
 rem ===========================================================================================
-for /f "tokens=2 delims=" %%v in ('java -version 2^>^&1 ^| findstr /i "version"') do (
-    for /f "tokens=1 delims=." %%m in ("%%v") do set "JAVA_MAJOR_VERSION=%%m"
+for /f tokens^=2^ delims^=^" %%v in ('java -version 2^>^&1 ^| findstr /i "version"') do (
+    for /f delims^=^. %%m in ("%%v") do set "JAVA_MAJOR_VERSION=%%m"
 )
 
 if "%JAVA_MAJOR_VERSION%"=="" (
     set "JAVA_MAJOR_VERSION=0"
 )
+echo JAVA_MAJOR_VERSION=%JAVA_MAJOR_VERSION%
 if %JAVA_MAJOR_VERSION% lss 17 (
    set "JAVA_OPT=%JAVA_OPT% -server -Xms2g -Xmx2g"
    set "JAVA_OPT=%JAVA_OPT% -XX:+UseG1GC -XX:G1HeapRegionSize=16m -XX:G1ReservePercent=25 -XX:InitiatingHeapOccupancyPercent=30 -XX:SoftRefLRUPolicyMSPerMB=0 -XX:SurvivorRatio=8"
